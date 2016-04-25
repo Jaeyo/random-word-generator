@@ -1,13 +1,16 @@
 package org.jaeyo.random_word_generator.random_word
 
 import java.io.File
-import org.jaeyo.random_word_generator.common.Path
+import java.io.PrintWriter
+
 import scala.io.Source
-import net.ruippeixotog.scalascraper.browser.JsoupBrowser
+import scala.util.Random
+
+import org.jaeyo.random_word_generator.common.Path
+
 import kr.co.shineware.nlp.komoran.core.analyzer.Komoran
 import kr.co.shineware.util.common.model.Pair
-import scala.util.Random
-import java.io.PrintWriter
+import net.ruippeixotog.scalascraper.browser.JsoupBrowser
 
 object RandomWordPool {
   protected var randomWords = Source.fromFile(randomWordFile).getLines.toList
@@ -29,9 +32,13 @@ object RandomWordPool {
   
   def collectedWordCount = randomWords.length
   
-  def randomWord = {
-    if(randomWords.length == 0) ""
-    else randomWords(Random.nextInt(randomWords.length - 1))
+  def randomWord(count: Int) = {
+    (1 to count) map {
+      (n: Int) => {
+        if(randomWords.length == 0) ""
+        else randomWords(Random.nextInt(randomWords.length - 1))
+      }
+    }
   }
   
   protected def makeSnapshot = {
