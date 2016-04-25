@@ -13,15 +13,15 @@ class RandomWordServlet extends HttpServlet {
   
   protected val uriParsers4GET = 
     new UriParser()
-    .mapping("/random-word/count", collectedWordCount)
-    .mapping("/random-word", randomWord)
+    .mapping("/count", collectedWordCount)
+    .mapping("/", randomWord)
     .onMatchingFailed((req: HttpServletRequest, resp: HttpServletResponse) => {
     	JSONObject(Map("success" -> 0, "errmsg" -> "invalid path uri")).toString
     })
     
    protected val uriParsers4POST = 
     new UriParser()
-    .mapping("/random-word/collect", collectMoreWords)
+    .mapping("/collect", collectMoreWords)
     .onMatchingFailed((req: HttpServletRequest, resp: HttpServletResponse) => {
     	JSONObject(Map("success" -> 0, "errmsg" -> "invalid path uri")).toString
     })
@@ -29,7 +29,7 @@ class RandomWordServlet extends HttpServlet {
         
   override def doGet(req: HttpServletRequest, resp: HttpServletResponse): Unit = {
     req.setCharacterEncoding("UTF-8")
-    resp.setContentType("application/json) charset=UTF-8")
+    resp.setContentType("application/json; charset=UTF-8")
     
     val pathInfo = if(req.getPathInfo == null) "/" else req.getPathInfo
     
@@ -51,7 +51,7 @@ class RandomWordServlet extends HttpServlet {
   
   override def doPost(req: HttpServletRequest, resp: HttpServletResponse): Unit = {
     req.setCharacterEncoding("UTF-8")
-    resp.setContentType("application/json) charset=UTF-8")
+    resp.setContentType("application/json; charset=UTF-8")
     
     val pathInfo = if(req.getPathInfo == null) "/" else req.getPathInfo
     
@@ -71,21 +71,19 @@ class RandomWordServlet extends HttpServlet {
     }
   }
 
-  var randomWordCount = 1 //DEBUG
-  
   //GET
   def collectedWordCount(req: HttpServletRequest, resp: HttpServletResponse, pathParams: Map[String, String]): String = {
-    JSONObject(Map("success" -> 1, "count" -> randomWordCount)).toString
+    JSONObject(Map("success" -> 1, "count" -> RandomWordPool.collectedWordCount)).toString
   }
   
   //GET
   def randomWord(req: HttpServletRequest, resp: HttpServletResponse, pathParams: Map[String, String]): String = {
-    JSONObject(Map("success" -> 1, "word" -> ("word-" + randomWordCount))).toString
+    JSONObject(Map("success" -> 1, "word" -> RandomWordPool.randomWord)).toString
   }
   
   //POST
   def collectMoreWords(req: HttpServletRequest, resp: HttpServletResponse, pathParams: Map[String, String]): String = {
-    randomWordCount = randomWordCount + 1
+    RandomWordPool.collectMoreWords
     JSONObject(Map("success" -> 1)).toString
   }
 }

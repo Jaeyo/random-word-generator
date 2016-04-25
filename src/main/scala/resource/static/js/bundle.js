@@ -19804,33 +19804,47 @@
 			};
 		},
 
-		onCollectMoreBtnClick: function onCollectMoreBtnClick(evt) {
+		componentDidMount: function componentDidMount() {
 			var _this = this;
 
-			evt.stopPropagation();
-			(0, _utilsServerJs.collectMoreWords)().then(function (success) {
-				return (0, _utilsServerJs.collectedWordCount)();
-			}).then(function (wordCount) {
+			(0, _utilsServerJs.collectedWordCount)().then(function (wordCount) {
 				_this.setState({ collectedWordCount: wordCount });
 			})['catch'](function (err) {
-				console.error(err.stack);
+				console.error(err);
 			});
 		},
 
-		onGetRandomWordBtnClick: function onGetRandomWordBtnClick(evt) {
+		onCollectMoreBtnClick: function onCollectMoreBtnClick(evt) {
 			var _this2 = this;
 
 			evt.stopPropagation();
 
-			(0, _utilsServerJs.randomWord)().then(function (word) {
-				_this2.setState({ randomWord: word });
+			this.setState({ collectedWordCount: '...' });
+
+			(0, _utilsServerJs.collectMoreWords)().then(function (success) {
+				return (0, _utilsServerJs.collectedWordCount)();
+			}).then(function (wordCount) {
+				_this2.setState({ collectedWordCount: wordCount });
 			})['catch'](function (err) {
-				console.error(err.stack);
+				console.error(err);
+			});
+		},
+
+		onGetRandomWordBtnClick: function onGetRandomWordBtnClick(evt) {
+			var _this3 = this;
+
+			evt.stopPropagation();
+
+			(0, _utilsServerJs.randomWord)().then(function (word) {
+				console.log({ word: word }); //DEBUG
+				_this3.setState({ randomWord: word });
+			})['catch'](function (err) {
+				console.error(err);
 			});
 		},
 
 		render: function render() {
-			var _this3 = this;
+			var _this4 = this;
 
 			var state = this.state;
 
@@ -19858,7 +19872,7 @@
 								color: 'white',
 								inverted: true,
 								rounded: true,
-								onClick: _this3.onCollectMoreBtnClick },
+								onClick: _this4.onCollectMoreBtnClick },
 							'collect more'
 						)
 					),
@@ -19877,7 +19891,7 @@
 								color: 'white',
 								inverted: true,
 								rounded: true,
-								onClick: _this3.onGetRandomWordBtnClick },
+								onClick: _this4.onGetRandomWordBtnClick },
 							'get random word'
 						)
 					)

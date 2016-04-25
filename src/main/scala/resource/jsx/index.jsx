@@ -20,8 +20,21 @@ var IndexPage = React.createClass({
 		}
 	},
 
+	componentDidMount() {
+		collectedWordCount()
+		.then((wordCount) => {
+			this.setState({ collectedWordCount: wordCount })
+		})
+		.catch((err) => {
+			console.error(err)
+		})
+	},
+
 	onCollectMoreBtnClick(evt) {
 		evt.stopPropagation()
+
+		this.setState({ collectedWordCount: '...' })
+
 		collectMoreWords()
 		.then((success) => {
 			return collectedWordCount()
@@ -30,7 +43,7 @@ var IndexPage = React.createClass({
 			this.setState({ collectedWordCount: wordCount })
 		})
 		.catch((err) => {
-			console.error(err.stack)
+			console.error(err)
 		})
 	},
 	
@@ -39,10 +52,11 @@ var IndexPage = React.createClass({
 
 		randomWord()
 		.then((word) => {
+			console.log({ word: word }) //DEBUG
 			this.setState({ randomWord: word })
 		})
 		.catch((err) => {
-			console.error(err.stack)
+			console.error(err)
 		})
 	},
 

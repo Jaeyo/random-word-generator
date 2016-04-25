@@ -2,7 +2,6 @@ import Promise from 'promise'
 import request from 'superagent'
 import util from 'util'
 
-
 var handleResp = function(err, resp, resolve, reject, callback) {
 	if(err) {
 		console.error(err.stack)

@@ -43,5 +43,6 @@ build.log
 
 .cache-main
 .cache-tests
-
 node_modules
+logs/
+random-word.txt
