@@ -1,10 +1,14 @@
 import React from 'react'
 import { tryCatch } from './utils/render-util.js'
 import Center from './common-comps/center.jsx'
+import _ from 'underscore'
 import {
 	Card,
 	Heading,
-	Button
+	Button,
+	Text,
+	Flex,
+	Stat
 } from 'rebass'
 import {
 	collectMoreWords,
@@ -52,8 +56,9 @@ var IndexPage = React.createClass({
 
 		randomWord()
 		.then((word) => {
-			console.log({ word: word }) //DEBUG
-			this.setState({ randomWord: word })
+			this.setState({ 
+				randomWord: word
+			})
 		})
 		.catch((err) => {
 			console.error(err)
@@ -66,24 +71,26 @@ var IndexPage = React.createClass({
 		return tryCatch(() => {
 			return (
 				<Center>
-					<Card rounded={true} width={256}>
-						<div>{state.collectedWordCount}</div>
-						<Heading level={2} size={3}>수집된 단어 수</Heading>
+					<Card rounded={true} width={512}>
+						<div>
+							<Stat label="수집된 단어 수" unit="개" value={state.collectedWordCount} />
+							<Stat label="random-word" value={state.randomWord} />
+						</div>
+						<Button 
+							color="white" 
+							inverted={true} 
+							rounded={true}
+							onClick={this.onCollectMoreBtnClick}>
+							수집하기
+						</Button>
 						<Button 
 							backgroundColor="primary" 
 							color="white" 
 							inverted={true} 
 							rounded={true}
-							onClick={this.onCollectMoreBtnClick}>collect more</Button>
-					</Card>
-					<Card rounded={true} width={256}>
-						<div>{state.randomWord}</div>
-						<Button 
-							backgroundColor="primary" 
-							color="white" 
-							inverted={true} 
-							rounded={true}
-							onClick={this.onGetRandomWordBtnClick}>get random word</Button>
+							onClick={this.onGetRandomWordBtnClick}>
+							무작위 단어
+						</Button>
 					</Card>
 				</Center>
 			)
