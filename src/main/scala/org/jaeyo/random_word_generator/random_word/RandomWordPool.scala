@@ -20,10 +20,7 @@ object RandomWordPool {
   }
   
   def collectMoreWords = {
-    val browser = JsoupBrowser()
-    val doc = browser.get("https://namu.wiki/random")
-    val collectedWords = extractNoun(doc.body.text)
-    randomWords = (randomWords ++ collectedWords).distinct
+    randomWords = (randomWords ++ extractNoun(newDocumentText)).distinct
     makeSnapshot
   }
   
@@ -33,6 +30,9 @@ object RandomWordPool {
     if(randomWords.length == 0) ""
     else randomWords(Random.nextInt(randomWords.length - 1))
   }
+  
+  protected def newDocumentText = 
+    JsoupBrowser().get("https://namu.wiki/random").body.text
   
   protected def makeSnapshot = {
     val output = new PrintWriter(randomWordFile)
