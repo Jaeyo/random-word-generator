@@ -11,8 +11,11 @@ import org.jaeyo.random_word_generator.common.Path
 import kr.co.shineware.nlp.komoran.core.analyzer.Komoran
 import kr.co.shineware.util.common.model.Pair
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
+import org.apache.log4j.Logger
+import net.ruippeixotog.scalascraper.model.Document
 
 object RandomWordPool {
+  private val logger = Logger.getLogger(this.getClass)
   protected var randomWords = Source.fromFile(randomWordFile).getLines.toList
   
   protected def randomWordFile = {

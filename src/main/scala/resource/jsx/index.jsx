@@ -77,11 +77,13 @@ var IndexPage = React.createClass({
 		return tryCatch(() => {
 			return (
 				<Center>
-					<Card rounded={true} width={512}>
+					<Card rounded={true} width={512} style={{ padding: '10px' }}>
 						<RandomWords 
 							words={state.randomWords} 
 							onClick={this.addToKeepWords} />
 						<Button 
+							style={{ margin: '10px' }}
+							theme="primary"
 							onClick={this.onGetRandomWordBtnClick}>
 							REFRESH</Button>
 						<hr />
@@ -107,9 +109,12 @@ var RandomWords = (props) => {
 		<div>
 		{
 			props.words.map((word) => {
+				if(word.trim().length == 0) return null
 				return (
 					<Button
 						key={'random-word-' + word}
+						theme="secondary"
+						style={{ margin: '4px' }}
 						onClick={ (evt) => {evt.stopPropagation(); props.onClick(word); } }>
 						{word}</Button>
 				)
@@ -121,13 +126,15 @@ var RandomWords = (props) => {
 
 var KeepWords = (props) => {
 	return (
-		<div>
+		<div style={{ margin: '5px' }}>
 			<div>keep words: </div>
 			{
 				props.words.map((word) => {
 					return (
 						<Button
 							key={'keep-word-' + word}
+							theme="secondary"
+							style={{ margin: '4px' }}
 							onClick={ (evt) => {evt.stopPropagation(); props.onClick(word); } }>
 							{word}</Button>
 					)
@@ -140,12 +147,15 @@ var KeepWords = (props) => {
 var CollectingStatus = (props) => {
 	return (
 		<div>
-			<div>
+			<div style={{ margin: '5px' }}>
 				<span>수집된 단어 수: </span>
 				<span>{props.collectedWordCount}</span>
 			</div>
 			<div>
-				<Button onClick={props.onCollectMoreBtnClick}>수집하기</Button>
+				<Button 
+					theme="success"
+					onClick={props.onCollectMoreBtnClick}>
+					수집하기</Button>
 			</div>
 		</div>
 	)
