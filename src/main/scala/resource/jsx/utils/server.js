@@ -44,7 +44,7 @@ var post = function(url, args, callback) {
 
 
 module.exports = {
-	collectMoreWords: (callback) => {
+	collectMoreWords: () => {
 		return post(
 			'/random-word/collect',
 			null,
@@ -52,7 +52,7 @@ module.exports = {
 		)
 	},
 
-	collectedWordCount: (callback) => {
+	collectedWordCount: () => {
 		return get(
 			'/random-word/count',
 			null,
@@ -60,11 +60,11 @@ module.exports = {
 		)
 	},
 
-	randomWord: (callback) => {
+	randomWords: (count) => {
 		return get(
 			'/random-word',
-			null,
-			(body) => { return body.word }
+			{ count: count },
+			(body) => { return body.words }
 		)
 	}
 }

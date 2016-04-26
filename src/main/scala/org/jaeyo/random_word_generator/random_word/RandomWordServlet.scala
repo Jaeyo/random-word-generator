@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import scala.util.parsing.json.JSONObject
 import javax.servlet.http.HttpServletRequestWrapper
+import scala.util.parsing.json.JSONArray
 
 class RandomWordServlet extends HttpServlet {
   private val logger = Logger.getLogger(classOf[RandomWordServlet])
@@ -78,7 +79,13 @@ class RandomWordServlet extends HttpServlet {
   
   //GET
   def randomWord(req: HttpServletRequest, resp: HttpServletResponse, pathParams: Map[String, String]): String = {
-    JSONObject(Map("success" -> 1, "word" -> RandomWordPool.randomWord)).toString
+    val count = if(req.getParameter("count") == null) 3 else req.getParameter("count").toInt
+    
+    val words = JSONArray(RandomWordPool.randomWord(count).toList)
+    JSONObject(Map(
+        "success" -> 1, 
+        "words" -> words
+    )).toString
   }
   
   //POST
